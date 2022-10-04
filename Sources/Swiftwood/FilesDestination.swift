@@ -72,6 +72,7 @@ public class FilesDestination: SwiftwoodDestination {
 	}
 
 	public func sendToDestination(_ entry: Swiftwood.LogEntry) {
+		guard entry.logLevel >= minimumLogLevel else { return }
 		let level = entry.logLevel.level
 
 		let filename = "\(entry.timestamp.timeIntervalSince1970)-\(UUID())-\(level)"
