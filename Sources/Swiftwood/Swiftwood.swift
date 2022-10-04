@@ -183,6 +183,7 @@ public class Swiftwood {
 //	}
 
 	public struct Level: Comparable, Equatable {
+		public static var veryVerbose = Level(textValue: "🤎 VERY VERBOSE", level: 0)
 		public static var verbose = Level(textValue: "💜 VERBOSE", level: 20)
 		public static var debug = Level(textValue: "💚 DEBUG", level: 40)
 		public static var info = Level(textValue: "💙 INFO", level: 60)
