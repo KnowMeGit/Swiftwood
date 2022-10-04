@@ -18,19 +18,10 @@ public class FilesDestination: SwiftwoodDestination {
 
 	public var minimumLogLevel: Swiftwood.Level = .init(rawValue: 0)
 
-//	public enum RotationStyle {
-//		case filesize(bytes: Int)
-//		case entries(count: Int)
-//	}
-//	public let rotationStyle: RotationStyle
-
-	public let ageBeforeCulling: TimeInterval?
-
 	public let logFolder: URL
 
 	public init(
 		logFolder: URL?,
-		ageBeforeCulling: TimeInterval?,
 		format: Swiftwood.Format = .init(),
 		fileformat: FileFormat = .json,
 		minimumLogLevel: Swiftwood.Level = .init(rawValue: 0)) throws {
@@ -44,7 +35,6 @@ public class FilesDestination: SwiftwoodDestination {
 					.appendingPathComponent("SwiftwoodLogs")
 				self.logFolder = logFolder
 			}
-			self.ageBeforeCulling = ageBeforeCulling
 			self.format = format
 			self.fileFormat = fileformat
 			self.minimumLogLevel = minimumLogLevel
@@ -94,6 +84,5 @@ public class FilesDestination: SwiftwoodDestination {
 		} catch {
 			print("Error!! Could not save log file!")
 		}
-
 	}
 }
