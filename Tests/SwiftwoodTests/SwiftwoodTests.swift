@@ -2,10 +2,15 @@ import XCTest
 @testable import Swiftwood
 
 final class SwiftwoodTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Swiftwood().text, "Hello, World!")
+    func testLogging() throws {
+		typealias log = Swiftwood
+
+		log.destinations.append(ConsoleLogDestination(maxBytesDisplayed: 1024))
+		log.destinations.append(try FilesDestination(
+			logFolder: nil,
+			ageBeforeCulling: nil))
+
+		log.warning("test warning")
+		log.error("Test error")
     }
 }
