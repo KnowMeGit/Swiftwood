@@ -1,14 +1,20 @@
 import XCTest
 @testable import Swiftwood
+typealias log = Swiftwood
 
 final class SwiftwoodTests: XCTestCase {
+	override func tearDown() {
+		super.tearDown()
+
+		log.clearDestinations()
+	}
+
     func testLogging() throws {
-		typealias log = Swiftwood
 
 		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
 		consoleDestination.minimumLogLevel = .veryVerbose
-		log.destinations.append(consoleDestination)
-		log.destinations.append(try FilesDestination(
+		log.appendDestination(consoleDestination)
+		log.appendDestination(try FilesDestination(
 			logFolder: nil,
 			fileformat: .formattedString
 		))
@@ -20,4 +26,40 @@ final class SwiftwoodTests: XCTestCase {
 		log.warning("uh oh")
 		log.error("Failed successfully")
     }
+
+	func testDestinationAdditionsForfeit() {
+		let consoleDestinationA = ConsoleLogDestination(maxBytesDisplayed: -1)
+		let consoleDestinationB = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(consoleDestinationA)
+		log.appendDestination(consoleDestinationB, replicationOption: .forfeitToAlike)
+
+		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationA }))
+		XCTAssertFalse(log.destinations.contains(where: { $0 === consoleDestinationB }))
+		XCTAssertEqual(log.destinations.count, 1)
+	}
+
+	func testDestinationAdditionsReplace() {
+		let consoleDestinationA = ConsoleLogDestination(maxBytesDisplayed: -1)
+		let consoleDestinationB = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(consoleDestinationA)
+		log.appendDestination(consoleDestinationB, replicationOption: .replaceAlike)
+
+		XCTAssertFalse(log.destinations.contains(where: { $0 === consoleDestinationA }))
+		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationB }))
+		XCTAssertEqual(log.destinations.count, 1)
+	}
+
+	func testDestinationAdditionsAppend() {
+		let consoleDestinationA = ConsoleLogDestination(maxBytesDisplayed: -1)
+		let consoleDestinationB = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(consoleDestinationA)
+		log.appendDestination(consoleDestinationB, replicationOption: .appendAlike)
+
+		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationA }))
+		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationB }))
+		XCTAssertEqual(log.destinations.count, 2)
+	}
 }

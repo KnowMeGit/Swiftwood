@@ -89,9 +89,47 @@ public class Swiftwood {
 		public let context: Any?
 	}
 
-	public static var destinations: [SwiftwoodDestination] = []
+	public private(set) static var destinations: [SwiftwoodDestination] = []
 
 	public static var logFormat = Format()
+
+	public enum ReplicationOption {
+		/// Replaces all destinations of the same type
+		case replaceAlike
+		/// Doesn't append new destination if another of the same type already exists
+		case forfeitToAlike
+		/// Doesn't evaluate if any similar destination already exists, it just adds it
+		case appendAlike
+	}
+	/**
+	 Appends destination to `Self.destinations` array. `replicationOption` defaults to `.forfeitToAlike`
+	 */
+	public static func appendDestination(_ destination: SwiftwoodDestination, replicationOption: ReplicationOption = .forfeitToAlike) {
+
+		switch replicationOption {
+		case .forfeitToAlike:
+			guard destinations.allSatisfy({ type(of: $0) != type(of: destination) }) else { return }
+			destinations.append(destination)
+		case .appendAlike:
+			destinations.append(destination)
+		case .replaceAlike:
+			while let index = destinations.firstIndex(where: { type(of: destination) == type(of: $0) }) {
+				destinations.remove(at: index)
+			}
+			destinations.append(destination)
+		}
+	}
+
+	/**
+	 Removes `destination` from `Self.destinations`
+	 */
+	public static func removeDestination(_ destination: SwiftwoodDestination) {
+		destinations.removeAll(where: { $0 === destination })
+	}
+
+	public static func clearDestinations() {
+		destinations.removeAll()
+	}
 
 	public static func info(
 		_ message: Any,
