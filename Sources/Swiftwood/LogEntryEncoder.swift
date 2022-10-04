@@ -1,6 +1,6 @@
 import Foundation
 
-protocol CodableLogEntryEncoder {
+protocol LogEntryEncoder {
 	func encode(_ value: Swiftwood.LogEntry) throws -> Data
 }
 
@@ -28,20 +28,20 @@ struct CodableLogEntry: Codable {
 	}
 }
 
-extension JSONEncoder: CodableLogEntryEncoder {
+extension JSONEncoder: LogEntryEncoder {
 	func encode(_ value: Swiftwood.LogEntry) throws -> Data {
 		let codeableEntry = CodableLogEntry(value)
 		return try encode(codeableEntry)
 	}
 }
-extension PropertyListEncoder: CodableLogEntryEncoder {
+extension PropertyListEncoder: LogEntryEncoder {
 	func encode(_ value: Swiftwood.LogEntry) throws -> Data {
 		let codeableEntry = CodableLogEntry(value)
 		return try encode(codeableEntry)
 	}
 }
 
-class StringEncoder: CodableLogEntryEncoder {
+class StringEncoder: LogEntryEncoder {
 	let format: Swiftwood.Format
 
 	init(format: Swiftwood.Format) {

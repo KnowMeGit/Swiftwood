@@ -14,7 +14,7 @@ public class FilesDestination: SwiftwoodDestination {
 		case formattedString = "log"
 	}
 
-	private let encoder: any CodableLogEntryEncoder
+	private let encoder: any LogEntryEncoder
 
 	public var minimumLogLevel: Swiftwood.Level = .init(rawValue: 0)
 
