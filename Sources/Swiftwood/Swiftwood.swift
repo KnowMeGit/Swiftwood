@@ -80,13 +80,13 @@ public class Swiftwood {
 	}
 
 	public struct LogEntry {
-		let timestamp: Date
-		let logLevel: Level
-		let message: Any
-		let file: String
-		let function: String
-		let lineNumber: Int
-		let context: Any?
+		public let timestamp: Date
+		public let logLevel: Level
+		public let message: Any
+		public let file: String
+		public let function: String
+		public let lineNumber: Int
+		public let context: Any?
 	}
 
 	public static var destinations: [SwiftwoodDestination] = []
