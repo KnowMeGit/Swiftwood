@@ -1,6 +1,10 @@
 import Foundation
 
+/**
+ Named "Files" because it creates a new file with each new log entry. Intending to create an additional single file solution in the future. Currently, no cleanup is done automatically for accumulated log files.
+ */
 public class FilesDestination: SwiftwoodDestination {
+	/// Ignored for any `fileFormat` other than `formattedString`
 	public var format: Swiftwood.Format = .init()
 
 	public let fileFormat: FileFormat
