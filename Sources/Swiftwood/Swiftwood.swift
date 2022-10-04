@@ -138,6 +138,16 @@ public class Swiftwood {
 			custom(level: .verbose, message, file: file, function: function, line: line, context: context)
 		}
 
+
+	public static func veryVerbose(
+		_ message: Any,
+		file: String = #file,
+		function: String = #function,
+		line: Int = #line,
+		context: Any? = nil) {
+			custom(level: .veryVerbose, message, file: file, function: function, line: line, context: context)
+		}
+
 	public static func custom(
 		level: Level,
 		_ message: Any,

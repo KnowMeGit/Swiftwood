@@ -6,13 +6,14 @@ final class SwiftwoodTests: XCTestCase {
 		typealias log = Swiftwood
 
 		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
-		consoleDestination.minimumLogLevel = .verbose
+		consoleDestination.minimumLogLevel = .veryVerbose
 		log.destinations.append(consoleDestination)
 		log.destinations.append(try FilesDestination(
 			logFolder: nil,
 			fileformat: .formattedString
 		))
 
+		log.veryVerbose("Don't even worry")
 		log.verbose("Something small happened")
 		log.debug("Some minor update")
 		log.info("Look at me")

@@ -16,7 +16,7 @@ public class FilesDestination: SwiftwoodDestination {
 
 	private let encoder: any LogEntryEncoder
 
-	public var minimumLogLevel: Swiftwood.Level = .init(rawValue: 0)
+	public var minimumLogLevel: Swiftwood.Level = .veryVerbose
 
 	public let logFolder: URL
 
@@ -24,7 +24,7 @@ public class FilesDestination: SwiftwoodDestination {
 		logFolder: URL?,
 		format: Swiftwood.Format = .init(),
 		fileformat: FileFormat = .json,
-		minimumLogLevel: Swiftwood.Level = .init(rawValue: 0)) throws {
+		minimumLogLevel: Swiftwood.Level = .veryVerbose) throws {
 
 			if let logFolder {
 				self.logFolder = logFolder
