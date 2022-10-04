@@ -5,12 +5,18 @@ final class SwiftwoodTests: XCTestCase {
     func testLogging() throws {
 		typealias log = Swiftwood
 
-		log.destinations.append(ConsoleLogDestination(maxBytesDisplayed: 1024))
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.minimumLogLevel = .verbose
+		log.destinations.append(consoleDestination)
 		log.destinations.append(try FilesDestination(
 			logFolder: nil,
-			ageBeforeCulling: nil))
+			fileformat: .formattedString
+		))
 
-		log.warning("test warning")
-		log.error("Test error")
+		log.verbose("Something small happened")
+		log.debug("Some minor update")
+		log.info("Look at me")
+		log.warning("uh oh")
+		log.error("Failed successfully")
     }
 }
