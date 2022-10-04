@@ -11,25 +11,7 @@ public class Swiftwood {
 	public static let logFileURLs: [URL] = []
 
 	public struct Format {
-
-		public static var defaultDateFormatter: DateFormatter = {
-			let formatter = DateFormatter()
-			formatter.dateFormat = "MM/dd/yyyy HH:mm:ss.SSS"
-			return formatter
-		}()
-
-		enum Part {
-			case timestamp(format: DateFormatter = Format.defaultDateFormatter)
-			case logLevel
-			case staticText(String)
-			case message
-			case file
-			case function
-			case lineNumber
-			case context
-		}
-
-		var parts: [Part] = [
+		public init(parts: [Swiftwood.Format.Part] = [
 			.timestamp(),
 			.staticText(" "),
 			.logLevel,
@@ -41,11 +23,33 @@ public class Swiftwood {
 			.lineNumber,
 			.staticText(" - "),
 			.message,
-		]
+		], separator: String = "") {
+			self.parts = parts
+			self.separator = separator
+		}
 
-		var separator = ""
 
-		func convertEntryToString(_ entry: LogEntry) -> String {
+		public static var defaultDateFormatter: DateFormatter = {
+			let formatter = DateFormatter()
+			formatter.dateFormat = "MM/dd/yyyy HH:mm:ss.SSS"
+			return formatter
+		}()
+
+		public enum Part {
+			case timestamp(format: DateFormatter = Format.defaultDateFormatter)
+			case logLevel
+			case staticText(String)
+			case message
+			case file
+			case function
+			case lineNumber
+			case context
+		}
+
+		public var parts: [Part]
+		public var separator: String
+
+		public func convertEntryToString(_ entry: LogEntry) -> String {
 			var output: [String] = []
 
 			for part in parts {
