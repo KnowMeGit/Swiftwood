@@ -249,22 +249,20 @@ public class Swiftwood {
 		/// automatically assigns to the closest default log level
 		public init(rawValue: Int) {
 			switch rawValue {
-			case ...20:
+			case ...19:
+				self.textValue = "🤎 VERY VERBOSE"
+			case 20...39:
 				self.textValue = "💜 VERBOSE"
-				self.level = 20
-			case 21...40:
+			case 40...59:
 				self.textValue = "💚 DEBUG"
-				self.level = 40
-			case 41...60:
+			case 60...79:
 				self.textValue = "💙 INFO"
-				self.level = 60
-			case 61...80:
+			case 80...99:
 				self.textValue = "💛 WARNING"
-				self.level = 80
 			default: // aka case 81...:
 				self.textValue = "❤️ ERROR"
-				self.level = 100
 			}
+			self.level = rawValue
 		}
 
 		public static func < (lhs: Swiftwood.Level, rhs: Swiftwood.Level) -> Bool {
