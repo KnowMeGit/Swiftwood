@@ -10,7 +10,10 @@ public protocol SwiftwoodDestination: AnyObject {
 public class Swiftwood {
 	public static let logFileURLs: [URL] = []
 
-	private static var _cachedBuildInfo: String?
+	#if DEBUG
+	static var testingVerbosity = false
+	#endif
+	private static var _cachedBuildInfo: String??
 	private static var _buildInfoGenerator: () -> String? = {
 		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
 	}
@@ -232,6 +235,9 @@ public class Swiftwood {
 
 	private static func getBuildInfo() -> String? {
 		if cacheBuildInfo, let _cachedBuildInfo {
+			#if DEBUG
+			if testingVerbosity { print("cache hit") }
+			#endif
 			return _cachedBuildInfo
 		} else {
 			let cachedBuildInfo = buildInfoGenerator()

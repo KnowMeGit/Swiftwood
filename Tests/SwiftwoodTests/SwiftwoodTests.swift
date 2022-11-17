@@ -30,6 +30,16 @@ final class SwiftwoodTests: XCTestCase {
 		log.info("Look at me")
 		log.warning("uh oh")
 		log.error("Failed successfully")
+
+		// manual verification - should resemble
+		/*
+		 11/17/2022 12:34:34.255 🤎 VERY VERBOSE SwiftwoodTests.swift testLogging():27 - Don't even worry
+		 11/17/2022 12:34:34.258 💜 VERBOSE SwiftwoodTests.swift testLogging():28 - Something small happened
+		 11/17/2022 12:34:34.261 💚 DEBUG SwiftwoodTests.swift testLogging():29 - Some minor update
+		 11/17/2022 12:34:34.263 💙 INFO SwiftwoodTests.swift testLogging():30 - Look at me
+		 11/17/2022 12:34:34.265 💛 WARNING SwiftwoodTests.swift testLogging():31 - uh oh
+		 11/17/2022 12:34:34.267 ❤️ ERROR SwiftwoodTests.swift testLogging():32 - Failed successfully
+		 */
     }
 
 	func testDestinationAdditionsForfeit() {
@@ -69,11 +79,44 @@ final class SwiftwoodTests: XCTestCase {
 	}
 
 	func testBuildInfo() {
+		log.testingVerbosity = true
 		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.format.parts.append(.staticText(" -- build: "))
 		consoleDestination.format.parts.append(.buildInfo)
 
 		log.appendDestination(consoleDestination)
 
 		log.info("testttt")
+		log.info("should be cached")
+
+		log.buildInfoGenerator = {
+			print("generated nil")
+			return nil
+		}
+
+		log.info("should be nil")
+		log.info("should be cached")
+
+		log.buildInfoGenerator = {
+			print("generated toot")
+			return "toot"
+		}
+		log.info("should be toot")
+		log.info("should be cached")
+
+		// manual verification - should resemble
+		/*
+		 11/17/2022 12:33:32.347 💙 INFO SwiftwoodTests.swift testBuildInfo():79 - testttt -- build: 21501
+		 cache hit
+		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():80 - should be cached -- build: 21501
+		 generated nil
+		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():87 - should be nil -- build: nil
+		 cache hit
+		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():88 - should be cached -- build: nil
+		 generated toot
+		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():94 - should be toot -- build: toot
+		 cache hit
+		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():95 - should be cached -- build: toot
+		 */
 	}
 }
