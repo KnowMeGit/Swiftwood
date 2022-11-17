@@ -81,34 +81,15 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 		log.appendDestination(censoredConsoleDestination)
 		log.appendDestination(unCensoredConsoleDestination, replicationOption: .appendAlike)
 
-		struct Password: CensoredLogItem, RawRepresentable, CustomStringConvertible {
-			let rawValue: String
-
-			var description: String { rawValue }
-		}
-
-		struct Key: CensoredLogItem, RawRepresentable, CustomStringConvertible {
-			let rawValue: String
-
-			var description: String { rawValue }
-			var censoredDescription: String {
-				guard
-					rawValue.count > 10,
-					let start = rawValue.index(rawValue.endIndex, offsetBy: -3, limitedBy: rawValue.startIndex)
-				else { return "***" }
-				return "***" + String(rawValue[start..<rawValue.endIndex])
-			}
-		}
-
-		let password = Password(rawValue: "shouldbeconditionallycensored")
-		let key = Key(rawValue: "thisisalongkey")
+		let password = CensoredPassword(rawValue: "shouldbeconditionallycensored")
+		let key = CensoredKey(rawValue: "thisisalongkey")
 
 		let numericalValue = 3
 		log.info("a", numericalValue, password, key)
 
 		// manual verification - should resemble
 		/*
-		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 Password: **CENSORED** ***key
+		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 CensoredPassword: **CENSORED** ***key
 		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 shouldbeconditionallycensored thisisalongkey
 		 */
 	}

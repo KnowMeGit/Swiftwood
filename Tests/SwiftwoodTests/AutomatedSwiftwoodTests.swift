@@ -109,4 +109,29 @@ final class AutomatedSwiftwoodTests: SwiftwoodTests {
 		XCTAssertEqual(message, logFile.message.first)
 		XCTAssertEqual(Swiftwood.Level.info.level, logFile.logLevel)
 	}
+
+	func testFileDestinationCensored() throws {
+		let logFolder = try logFolder()
+		let fileDestination = try FilesDestination(logFolder: logFolder, shouldCensor: true)
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(fileDestination)
+		log.appendDestination(consoleDestination)
+
+		var logContent: [URL] = []
+
+		let message = "test file destination"
+		let password = CensoredPassword(rawValue: "password!1234")
+		log.info(message, password)
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertEqual(1, logContent.count)
+
+		let logFileURL = logContent[0]
+		let logFileData = try Data(contentsOf: logFileURL)
+
+		let logFile = try JSONDecoder().decode(CodableLogEntry.self, from: logFileData)
+		XCTAssertEqual(message, logFile.message.first)
+		XCTAssertEqual(password.censoredDescription, logFile.message.last)
+		XCTAssertEqual(Swiftwood.Level.info.level, logFile.logLevel)
+	}
 }

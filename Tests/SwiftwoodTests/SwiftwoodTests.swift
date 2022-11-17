@@ -27,4 +27,23 @@ class SwiftwoodTests: XCTestCase {
 		let logFolder = cacheFolder.appendingPathComponent("logs")
 		return logFolder
 	}
+
+	struct CensoredPassword: CensoredLogItem, RawRepresentable, CustomStringConvertible {
+		let rawValue: String
+
+		var description: String { rawValue }
+	}
+
+	struct CensoredKey: CensoredLogItem, RawRepresentable, CustomStringConvertible {
+		let rawValue: String
+
+		var description: String { rawValue }
+		var censoredDescription: String {
+			guard
+				rawValue.count > 10,
+				let start = rawValue.index(rawValue.endIndex, offsetBy: -3, limitedBy: rawValue.startIndex)
+			else { return "***" }
+			return "***" + String(rawValue[start..<rawValue.endIndex])
+		}
+	}
 }
