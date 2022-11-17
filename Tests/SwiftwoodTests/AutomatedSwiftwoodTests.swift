@@ -38,4 +38,75 @@ final class AutomatedSwiftwoodTests: SwiftwoodTests {
 		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationB }))
 		XCTAssertEqual(log.destinations.count, 2)
 	}
+
+	func testFileDestination() throws {
+		let logFolder = try logFolder()
+		let fileDestination = try FilesDestination(logFolder: logFolder, fileformat: .formattedString, minimumLogLevel: .info)
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.minimumLogLevel = .verbose
+
+		log.appendDestination(fileDestination)
+		log.appendDestination(consoleDestination)
+
+		var logContent: [URL] = []
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertTrue(logContent.isEmpty)
+
+		let message = "test file destination"
+		log.info(message)
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertEqual(1, logContent.count)
+
+		let consoleOnly = "test console destination"
+		log.verbose(consoleOnly)
+		log.debug(consoleOnly)
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertEqual(1, logContent.count)
+	}
+
+	func testFileDestinationFormattedString() throws {
+		let logFolder = try logFolder()
+		let fileDestination = try FilesDestination(logFolder: logFolder, fileformat: .formattedString, minimumLogLevel: .info)
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(fileDestination)
+		log.appendDestination(consoleDestination)
+
+		var logContent: [URL] = []
+
+		let message = "test file destination"
+		log.info(message)
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertEqual(1, logContent.count)
+
+		let logFileURL = logContent[0]
+		let logFileData = try Data(contentsOf: logFileURL)
+
+		let logFile = try XCTUnwrap(String(data: logFileData, encoding: .utf8))
+		XCTAssertTrue(logFile.contains(message))
+		XCTAssertTrue(logFile.contains("💙 INFO AutomatedSwiftwoodTests.swift testFileDestinationFormattedString()"))
+	}
+
+	func testFileDestinationJSON() throws {
+		let logFolder = try logFolder()
+		let fileDestination = try FilesDestination(logFolder: logFolder, fileformat: .json, minimumLogLevel: .info)
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+
+		log.appendDestination(fileDestination)
+		log.appendDestination(consoleDestination)
+
+		var logContent: [URL] = []
+
+		let message = "test file destination"
+		log.info(message)
+		logContent = try FileManager.default.contentsOfDirectory(at: logFolder, includingPropertiesForKeys: nil)
+		XCTAssertEqual(1, logContent.count)
+
+		let logFileURL = logContent[0]
+		let logFileData = try Data(contentsOf: logFileURL)
+
+		let logFile = try JSONDecoder().decode(CodableLogEntry.self, from: logFileData)
+		XCTAssertEqual(message, logFile.message.first)
+		XCTAssertEqual(Swiftwood.Level.info.level, logFile.logLevel)
+	}
 }
