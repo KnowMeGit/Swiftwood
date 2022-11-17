@@ -3,6 +3,7 @@ import Foundation
 public protocol SwiftwoodDestination: AnyObject {
 	var format: Swiftwood.Format { get }
 	var minimumLogLevel: Swiftwood.Level { get }
+	var shouldCensor: Bool { get set }
 	func sendToDestination(_ entry: Swiftwood.LogEntry)
 }
 
@@ -69,7 +70,7 @@ public class Swiftwood {
 		public var parts: [Part]
 		public var separator: String
 
-		public func convertEntryToString(_ entry: LogEntry) -> String {
+		public func convertEntryToString(_ entry: LogEntry, censoring: Bool) -> String {
 			var output: [String] = []
 
 			for part in parts {
@@ -81,7 +82,20 @@ public class Swiftwood {
 				case .staticText(let string):
 					output.append(string)
 				case .message:
-					output.append("\(entry.message)")
+					let message = entry
+						.message
+						.map {
+							if
+								censoring,
+								let censored = $0 as? CensoredLogItem {
+
+								return censored.censoredDescription
+							} else {
+								return String(describing: $0)
+							}
+						}
+						.joined(separator: " ")
+					output.append(message)
 				case .file:
 					let url = URL(fileURLWithPath: entry.file)
 					let file = url.lastPathComponent
@@ -104,7 +118,7 @@ public class Swiftwood {
 	public struct LogEntry {
 		public let timestamp: Date
 		public let logLevel: Level
-		public let message: Any
+		public let message: [Any]
 		public let file: String
 		public let function: String
 		public let lineNumber: Int
@@ -155,7 +169,7 @@ public class Swiftwood {
 	}
 
 	public static func info(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -164,7 +178,7 @@ public class Swiftwood {
 		}
 
 	public static func warning(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -173,7 +187,7 @@ public class Swiftwood {
 		}
 
 	public static func error(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -182,7 +196,7 @@ public class Swiftwood {
 		}
 
 	public static func debug(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -191,7 +205,7 @@ public class Swiftwood {
 		}
 
 	public static func verbose(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -201,7 +215,7 @@ public class Swiftwood {
 
 
 	public static func veryVerbose(
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -211,7 +225,7 @@ public class Swiftwood {
 
 	public static func custom(
 		level: Level,
-		_ message: Any,
+		_ message: Any ...,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,

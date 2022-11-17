@@ -3,17 +3,19 @@ import Foundation
 public class ConsoleLogDestination: SwiftwoodDestination {
 	public var format = Swiftwood.Format()
 	public var minimumLogLevel: Swiftwood.Level = .info
+	public var shouldCensor: Bool
 
 	public var maxBytesDisplayed: Int
 
-	public init(maxBytesDisplayed: Int) {
+	public init(maxBytesDisplayed: Int, shouldCensor: Bool = false) {
 		self.maxBytesDisplayed = maxBytesDisplayed
+		self.shouldCensor = shouldCensor
 	}
 
 	public func sendToDestination(_ entry: Swiftwood.LogEntry) {
 		guard entry.logLevel >= minimumLogLevel else { return }
 
-		let formattedMessage = format.convertEntryToString(entry)
+		let formattedMessage = format.convertEntryToString(entry, censoring: shouldCensor)
 
 		guard maxBytesDisplayed > 0 else {
 			print(formattedMessage)

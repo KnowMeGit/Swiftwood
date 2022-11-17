@@ -6,6 +6,7 @@ import Foundation
 public class FilesDestination: SwiftwoodDestination {
 	/// Ignored for any `fileFormat` other than `formattedString`
 	public var format: Swiftwood.Format = .init()
+	public var shouldCensor: Bool
 
 	public let fileFormat: FileFormat
 	public enum FileFormat: String {
@@ -23,6 +24,7 @@ public class FilesDestination: SwiftwoodDestination {
 	public init(
 		logFolder: URL?,
 		format: Swiftwood.Format = .init(),
+		shouldCensor: Bool = true,
 		fileformat: FileFormat = .json,
 		minimumLogLevel: Swiftwood.Level = .veryVerbose) throws {
 
@@ -36,6 +38,7 @@ public class FilesDestination: SwiftwoodDestination {
 				self.logFolder = logFolder
 			}
 			self.format = format
+			self.shouldCensor = shouldCensor
 			self.fileFormat = fileformat
 			self.minimumLogLevel = minimumLogLevel
 			switch fileformat {
@@ -68,7 +71,7 @@ public class FilesDestination: SwiftwoodDestination {
 		let filename = "\(entry.timestamp.timeIntervalSince1970)-\(UUID())-\(level)"
 
 		do {
-			let data = try encoder.encode(entry)
+			let data = try encoder.encode(entry, shouldCensor: shouldCensor)
 
 			let options: Data.WritingOptions
 			if #available(macOS 11.0, *) {
