@@ -310,7 +310,7 @@ public class Swiftwood {
 				self.textValue = "💙 INFO"
 			case 80...99:
 				self.textValue = "💛 WARNING"
-			default: // aka case 81...:
+			default: // aka case 100...:
 				self.textValue = "❤️ ERROR"
 			}
 			self.level = rawValue
