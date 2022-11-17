@@ -2,6 +2,11 @@ import XCTest
 @testable import Swiftwood
 typealias log = Swiftwood
 
+/**
+ Important note for anyone running tests is that they, by nature, many cannot really be automated. Most will need manual verification that what is logged will appear in
+ the console. Perhaps some test system will work someday, but that time is not now. In the mean time, these tests largely serve as templates by which you can manually
+ run them and verify that it performs as expected. (those with some variant of `XCTAssert` should be fine to just trust the result)
+ */
 final class SwiftwoodTests: XCTestCase {
 	override func tearDown() {
 		super.tearDown()
@@ -61,5 +66,14 @@ final class SwiftwoodTests: XCTestCase {
 		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationA }))
 		XCTAssertTrue(log.destinations.contains(where: { $0 === consoleDestinationB }))
 		XCTAssertEqual(log.destinations.count, 2)
+	}
+
+	func testBuildInfo() {
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.format.parts.append(.buildInfo)
+
+		log.appendDestination(consoleDestination)
+
+		log.info("testttt")
 	}
 }

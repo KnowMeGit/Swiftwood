@@ -10,6 +10,22 @@ public protocol SwiftwoodDestination: AnyObject {
 public class Swiftwood {
 	public static let logFileURLs: [URL] = []
 
+	private static var _cachedBuildInfo: String?
+	private static var _buildInfoGenerator: () -> String? = {
+		Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+	}
+	/**
+	 If `cacheBuildInfo` set to `true` (which is the default), will only run if the value is not already cached.
+	 */
+	public static var buildInfoGenerator: () -> String? {
+		get { _buildInfoGenerator }
+		set {
+			_buildInfoGenerator = newValue
+			_cachedBuildInfo = nil
+		}
+	}
+	public static var cacheBuildInfo = true
+
 	public struct Format {
 		public init(parts: [Swiftwood.Format.Part] = [
 			.timestamp(),
@@ -43,6 +59,7 @@ public class Swiftwood {
 			case file
 			case function
 			case lineNumber
+			case buildInfo
 			case context
 		}
 
@@ -70,6 +87,8 @@ public class Swiftwood {
 					output.append(entry.function)
 				case .lineNumber:
 					output.append("\(entry.lineNumber)")
+				case .buildInfo:
+					output.append(entry.buildInfo ?? "nil")
 				case .context:
 					output.append("\(entry.context as Any)")
 				}
@@ -86,6 +105,7 @@ public class Swiftwood {
 		public let file: String
 		public let function: String
 		public let lineNumber: Int
+		public let buildInfo: String?
 		public let context: Any?
 	}
 
@@ -202,12 +222,23 @@ public class Swiftwood {
 				file: file,
 				function: function,
 				lineNumber: line,
+				buildInfo: getBuildInfo(),
 				context: context)
 
 			destinations.forEach {
 				$0.sendToDestination(logEntry)
 			}
 		}
+
+	private static func getBuildInfo() -> String? {
+		if cacheBuildInfo, let _cachedBuildInfo {
+			return _cachedBuildInfo
+		} else {
+			let cachedBuildInfo = buildInfoGenerator()
+			_cachedBuildInfo = cachedBuildInfo
+			return cachedBuildInfo
+		}
+	}
 
 	public static func clearLogs() {}
 
