@@ -11,6 +11,7 @@ struct CodableLogEntry: Codable {
 	let sourceFile: String
 	let function: String
 	let lineNumber: Int
+	let buildInfo: String?
 	let context: String?
 
 	var approximateSize: Int {
@@ -24,6 +25,7 @@ struct CodableLogEntry: Codable {
 		self.sourceFile = URL(fileURLWithPath: input.file).lastPathComponent
 		self.function = input.function
 		self.lineNumber = input.lineNumber
+		self.buildInfo = input.buildInfo
 		self.context = input.context.map { "\($0)" }
 	}
 }
