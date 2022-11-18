@@ -1,24 +1,24 @@
 import Foundation
 
-protocol LogEntryEncoder {
+public protocol LogEntryEncoder {
 	func encode(_ value: Swiftwood.LogEntry, shouldCensor: Bool) throws -> Data
 }
 
-struct CodableLogEntry: Codable {
-	let timestamp: Date
-	let logLevel: Int
-	let message: [String]
-	let sourceFile: String
-	let function: String
-	let lineNumber: Int
-	let buildInfo: String?
-	let context: String?
+public struct CodableLogEntry: Codable {
+	public let timestamp: Date
+	public let logLevel: Int
+	public let message: [String]
+	public let sourceFile: String
+	public let function: String
+	public let lineNumber: Int
+	public let buildInfo: String?
+	public let context: String?
 
-	var approximateSize: Int {
+	public var approximateSize: Int {
 		message.count + (context?.count ?? 0)
 	}
 
-	init(_ input: Swiftwood.LogEntry, shouldCensor: Bool) {
+	public init(_ input: Swiftwood.LogEntry, shouldCensor: Bool) {
 		self.timestamp = input.timestamp
 		self.logLevel = input.logLevel.level
 		self.message = input
@@ -42,13 +42,13 @@ struct CodableLogEntry: Codable {
 }
 
 extension JSONEncoder: LogEntryEncoder {
-	func encode(_ value: Swiftwood.LogEntry, shouldCensor: Bool) throws -> Data {
+	public func encode(_ value: Swiftwood.LogEntry, shouldCensor: Bool) throws -> Data {
 		let codeableEntry = CodableLogEntry(value, shouldCensor: shouldCensor)
 		return try encode(codeableEntry)
 	}
 }
 extension PropertyListEncoder: LogEntryEncoder {
-	func encode(_ value: Swiftwood.LogEntry, shouldCensor: Bool) throws -> Data {
+	public func encode(_ value: Swiftwood.LogEntry, shouldCensor: Bool) throws -> Data {
 		let codeableEntry = CodableLogEntry(value, shouldCensor: shouldCensor)
 		return try encode(codeableEntry)
 	}
