@@ -13,8 +13,6 @@ public struct CodableLogEntry: Codable {
 	public let lineNumber: Int
 	public let buildInfo: String?
 	public let context: String?
-	// allows for storing arbitrary extra data encoded in string format for extension "overrides"
-	public var userData: [String: String] = [:]
 
 	public var approximateSize: Int {
 		message.count + (context?.count ?? 0)
