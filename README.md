@@ -1,4 +1,5 @@
 # Swiftwood
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FKnowMeGit%2FSwiftwood%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/KnowMeGit/Swiftwood) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FKnowMeGit%2FSwiftwood%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/KnowMeGit/Swiftwood)
 
 A logging package for swift projects.
 ("swiftwood" is a pun of "driftwood" since logs are often just tossed into the stream of events to be lost amidst the wilderness)
