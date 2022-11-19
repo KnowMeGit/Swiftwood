@@ -73,12 +73,16 @@ public class FilesDestination: SwiftwoodDestination {
 		do {
 			let data = try encoder.encode(entry, shouldCensor: shouldCensor)
 
+			#if os(Linux)
+			let options: Data.WritingOptions = .atomic
+			#else
 			let options: Data.WritingOptions
 			if #available(macOS 11.0, *) {
 				options = [.atomic, .completeFileProtectionUnlessOpen]
 			} else {
 				options = [.atomic]
 			}
+			#endif
 			try data.write(
 				to: logFolder
 					.appendingPathComponent(filename)
