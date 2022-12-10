@@ -6,7 +6,7 @@ import Foundation
  filter output from logging destinations, or perhaps send everything to a remote destination and then use categories for filtering in remote logging. Again, sky's the limit.
  You are an adult. You can come up with your own ideas.
  */
-public struct LogCategory: RawRepresentable, ExpressibleByStringLiteral, CustomStringConvertible, Codable {
+public struct LogCategory: RawRepresentable, ExpressibleByStringLiteral, CustomStringConvertible, Codable, Hashable {
 	public let rawValue: String
 
 	public var description: String { rawValue }
@@ -22,4 +22,24 @@ public struct LogCategory: RawRepresentable, ExpressibleByStringLiteral, CustomS
 
 public extension LogCategory {
 	static let `default`: LogCategory = "default"
+}
+
+
+public extension LogCategory {
+	enum Filter {
+		case allow(Set<LogCategory>)
+		case block(Set<LogCategory>)
+		case none
+
+		func allows(_ category: LogCategory) -> Bool {
+			switch self {
+			case .allow(let allowList):
+				return allowList.contains(category)
+			case .block(let blockList):
+				return blockList.contains(category) == false
+			case .none:
+				return true
+			}
+		}
+	}
 }
