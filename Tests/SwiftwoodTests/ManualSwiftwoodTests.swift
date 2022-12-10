@@ -93,4 +93,59 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 shouldbeconditionallycensored thisisalongkey
 		 */
 	}
+
+	func testCategoryFilteringNone() {
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.logFilter = .none
+		log.appendDestination(consoleDestination)
+
+		log.info("fake doors!", category: .fakeDoors)
+		log.info("real doors!", category: .realDoors)
+		log.info("real fake doors!", category: .realFakeDoors)
+		// manual verification - should resemble
+
+		/*
+		 12/10/2022 00:10:27.170 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():102 - fake doors!
+		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():103 - real doors!
+		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():104 - real fake doors!
+		 */
+	}
+
+	func testCategoryFilteringAllow() {
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.logFilter = .allow([.realFakeDoors])
+		log.appendDestination(consoleDestination)
+
+		log.info("fake doors!", category: .fakeDoors)
+		log.info("real doors!", category: .realDoors)
+		log.info("real fake doors!", category: .realFakeDoors)
+
+		// manual verification - should resemble
+		/*
+		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():104 - real fake doors!
+		 */
+	}
+
+	func testCategoryFilteringBlock() {
+		let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
+		consoleDestination.logFilter = .block([.realFakeDoors])
+		log.appendDestination(consoleDestination)
+
+		log.info("fake doors!", category: .fakeDoors)
+		log.info("real doors!", category: .realDoors)
+		log.info("real fake doors!", category: .realFakeDoors)
+
+		// manual verification - should resemble
+		/*
+		 12/10/2022 00:10:27.170 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():102 - fake doors!
+		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():103 - real doors!
+		 */
+	}
+}
+
+
+fileprivate extension LogCategory {
+	static let fakeDoors: LogCategory = "fakeDoors"
+	static let realDoors: LogCategory = "realDoors"
+	static let realFakeDoors: LogCategory = "realFakeDoors"
 }
