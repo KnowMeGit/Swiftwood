@@ -84,7 +84,7 @@ final class AutomatedSwiftwoodTests: SwiftwoodTests {
 
 		let logFile = try XCTUnwrap(String(data: logFileData, encoding: .utf8))
 		XCTAssertTrue(logFile.contains(message))
-		XCTAssertTrue(logFile.contains("💙 INFO AutomatedSwiftwoodTests.swift testFileDestinationFormattedString()"))
+		XCTAssertTrue(logFile.contains("(💙 INFO default) AutomatedSwiftwoodTests.swift testFileDestinationFormattedString()"))
 	}
 
 	func testFileDestinationJSON() throws {
