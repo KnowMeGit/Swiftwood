@@ -31,7 +31,7 @@ public extension LogCategory {
 		case block(Set<LogCategory>)
 		case none
 
-		func allows(_ category: LogCategory) -> Bool {
+		public func allows(_ category: LogCategory) -> Bool {
 			switch self {
 			case .allow(let allowList):
 				return allowList.contains(category)
