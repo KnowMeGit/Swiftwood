@@ -14,11 +14,6 @@ public class ConsoleLogDestination: SwiftwoodDestination {
 	}
 
 	public func sendToDestination(_ entry: Swiftwood.LogEntry) {
-		guard
-			entry.logLevel >= minimumLogLevel,
-			logFilter.allows(entry.category)
-		else { return }
-
 		let formattedMessage = format.convertEntryToString(entry, censoring: shouldCensor)
 
 		guard maxBytesDisplayed > 0 else {

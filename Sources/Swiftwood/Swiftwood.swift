@@ -236,7 +236,6 @@ public class Swiftwood {
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-//			guard level >= minimumLogLevel else { return }
 			let date = Date()
 			let logEntry = LogEntry(
 				timestamp: date,
@@ -250,7 +249,7 @@ public class Swiftwood {
 				context: context)
 
 			destinations.forEach {
-				$0.sendToDestination(logEntry)
+				$0.sendToDestinationIfPassesFilters(logEntry)
 			}
 		}
 
