@@ -8,6 +8,7 @@ public struct CodableLogEntry: Codable {
 	public let timestamp: Date
 	public let logLevel: Int
 	public let message: [String]
+	public let category: LogCategory
 	public let sourceFile: String
 	public let function: String
 	public let lineNumber: Int
@@ -33,6 +34,7 @@ public struct CodableLogEntry: Codable {
 					return String(describing: $0)
 				}
 			}
+		self.category = input.category
 		self.sourceFile = URL(fileURLWithPath: input.file).lastPathComponent
 		self.function = input.function
 		self.lineNumber = input.lineNumber

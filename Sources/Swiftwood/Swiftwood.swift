@@ -119,6 +119,7 @@ public class Swiftwood {
 		public let timestamp: Date
 		public let logLevel: Level
 		public let message: [Any]
+		public let category: LogCategory
 		public let file: String
 		public let function: String
 		public let lineNumber: Int
@@ -170,62 +171,69 @@ public class Swiftwood {
 
 	public static func info(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .info, message, file: file, function: function, line: line, context: context)
+			custom(level: .info, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 	public static func warning(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .warning, message, file: file, function: function, line: line, context: context)
+			custom(level: .warning, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 	public static func error(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .error, message, file: file, function: function, line: line, context: context)
+			custom(level: .error, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 	public static func debug(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .debug, message, file: file, function: function, line: line, context: context)
+			custom(level: .debug, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 	public static func verbose(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .verbose, message, file: file, function: function, line: line, context: context)
+			custom(level: .verbose, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 
 	public static func veryVerbose(
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
 		context: Any? = nil) {
-			custom(level: .veryVerbose, message, file: file, function: function, line: line, context: context)
+			custom(level: .veryVerbose, message, category: category, file: file, function: function, line: line, context: context)
 		}
 
 	public static func custom(
 		level: Level,
 		_ message: Any ...,
+		category: LogCategory = .default,
 		file: String = #file,
 		function: String = #function,
 		line: Int = #line,
@@ -236,6 +244,7 @@ public class Swiftwood {
 				timestamp: date,
 				logLevel: level,
 				message: message,
+				category: category,
 				file: file,
 				function: function,
 				lineNumber: line,
