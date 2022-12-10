@@ -24,12 +24,12 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 
 		// manual verification - should resemble
 		/*
-		 11/17/2022 12:34:34.255 🤎 VERY VERBOSE SwiftwoodTests.swift testLogging():27 - Don't even worry
-		 11/17/2022 12:34:34.258 💜 VERBOSE SwiftwoodTests.swift testLogging():28 - Something small happened
-		 11/17/2022 12:34:34.261 💚 DEBUG SwiftwoodTests.swift testLogging():29 - Some minor update
-		 11/17/2022 12:34:34.263 💙 INFO SwiftwoodTests.swift testLogging():30 - Look at me
-		 11/17/2022 12:34:34.265 💛 WARNING SwiftwoodTests.swift testLogging():31 - uh oh
-		 11/17/2022 12:34:34.267 ❤️ ERROR SwiftwoodTests.swift testLogging():32 - Failed successfully
+		 12/10/2022 00:19:57.461 (🤎 VERY VERBOSE default) ManualSwiftwoodTests.swift testLogging():18 - Don't even worry
+		 12/10/2022 00:19:57.463 (💜 VERBOSE default) ManualSwiftwoodTests.swift testLogging():19 - Something small happened
+		 12/10/2022 00:19:57.464 (💚 DEBUG default) ManualSwiftwoodTests.swift testLogging():20 - Some minor update
+		 12/10/2022 00:19:57.464 (💙 INFO default) ManualSwiftwoodTests.swift testLogging():21 - Look at me
+		 12/10/2022 00:19:57.464 (💛 WARNING default) ManualSwiftwoodTests.swift testLogging():22 - uh oh
+		 12/10/2022 00:19:57.465 (❤️ ERROR default) ManualSwiftwoodTests.swift testLogging():23 - Failed successfully
 		 */
     }
 
@@ -61,17 +61,17 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 
 		// manual verification - should resemble
 		/*
-		 11/17/2022 12:33:32.347 💙 INFO SwiftwoodTests.swift testBuildInfo():79 - testttt -- build: 21501
+		 12/10/2022 00:19:35.699 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():44 - testttt -- build: 21501
 		 cache hit
-		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():80 - should be cached -- build: 21501
+		 12/10/2022 00:19:35.700 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():45 - should be cached -- build: 21501
 		 generated nil
-		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():87 - should be nil -- build: nil
+		 12/10/2022 00:19:35.700 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():52 - should be nil -- build: nil
 		 cache hit
-		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():88 - should be cached -- build: nil
+		 12/10/2022 00:19:35.700 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():53 - should be cached -- build: nil
 		 generated toot
-		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():94 - should be toot -- build: toot
+		 12/10/2022 00:19:35.700 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():59 - should be toot -- build: toot
 		 cache hit
-		 11/17/2022 12:33:32.348 💙 INFO SwiftwoodTests.swift testBuildInfo():95 - should be cached -- build: toot
+		 12/10/2022 00:19:35.700 (💙 INFO default) ManualSwiftwoodTests.swift testBuildInfo():60 - should be cached -- build: toot
 		 */
 	}
 
@@ -89,8 +89,8 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 
 		// manual verification - should resemble
 		/*
-		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 CensoredPassword: **CENSORED** ***key
-		 11/17/2022 14:54:33.345 💙 INFO SwiftwoodTests.swift testCensoring():152 - a 3 shouldbeconditionallycensored thisisalongkey
+		 12/10/2022 00:18:55.502 (💙 INFO default) ManualSwiftwoodTests.swift testCensoring():88 - a 3 CensoredPassword: **CENSORED** ***key
+		 12/10/2022 00:18:55.502 (💙 INFO default) ManualSwiftwoodTests.swift testCensoring():88 - a 3 shouldbeconditionallycensored thisisalongkey
 		 */
 	}
 
@@ -105,9 +105,9 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 		// manual verification - should resemble
 
 		/*
-		 12/10/2022 00:10:27.170 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():102 - fake doors!
-		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():103 - real doors!
-		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():104 - real fake doors!
+		 12/10/2022 00:17:56.503 (💙 INFO fakeDoors) ManualSwiftwoodTests.swift testCategoryFilteringNone():102 - fake doors!
+		 12/10/2022 00:17:56.504 (💙 INFO realDoors) ManualSwiftwoodTests.swift testCategoryFilteringNone():103 - real doors!
+		 12/10/2022 00:17:56.504 (💙 INFO realFakeDoors) ManualSwiftwoodTests.swift testCategoryFilteringNone():104 - real fake doors!
 		 */
 	}
 
@@ -122,7 +122,7 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 
 		// manual verification - should resemble
 		/*
-		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():104 - real fake doors!
+		 12/10/2022 00:18:34.809 (💙 INFO realFakeDoors) ManualSwiftwoodTests.swift testCategoryFilteringAllow():121 - real fake doors!
 		 */
 	}
 
@@ -137,8 +137,8 @@ final class ManualSwiftwoodTests: SwiftwoodTests {
 
 		// manual verification - should resemble
 		/*
-		 12/10/2022 00:10:27.170 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():102 - fake doors!
-		 12/10/2022 00:10:27.172 💙 INFO ManualSwiftwoodTests.swift testCategoryFilteringNone():103 - real doors!
+		 12/10/2022 00:18:45.063 (💙 INFO fakeDoors) ManualSwiftwoodTests.swift testCategoryFilteringBlock():134 - fake doors!
+		 12/10/2022 00:18:45.064 (💙 INFO realDoors) ManualSwiftwoodTests.swift testCategoryFilteringBlock():135 - real doors!
 		 */
 	}
 }

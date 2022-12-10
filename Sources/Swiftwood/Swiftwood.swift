@@ -34,9 +34,11 @@ public class Swiftwood {
 	public struct Format {
 		public init(parts: [Swiftwood.Format.Part] = [
 			.timestamp(),
-			.staticText(" "),
+			.staticText(" ("),
 			.logLevel,
 			.staticText(" "),
+			.category,
+			.staticText(") "),
 			.file,
 			.staticText(" "),
 			.function,
@@ -61,6 +63,7 @@ public class Swiftwood {
 			case logLevel
 			case staticText(String)
 			case message
+			case category
 			case file
 			case function
 			case lineNumber
@@ -97,6 +100,8 @@ public class Swiftwood {
 						}
 						.joined(separator: " ")
 					output.append(message)
+				case .category:
+					output.append(entry.category.rawValue)
 				case .file:
 					let url = URL(fileURLWithPath: entry.file)
 					let file = url.lastPathComponent
