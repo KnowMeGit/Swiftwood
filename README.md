@@ -14,6 +14,7 @@ No remote logging destination is currently included. It isn't that hard to creat
 ### Initial Setup
 ```swift 
 
+public typealias log = Swiftwood
 fileprivate let setupLock = NSLock()
 fileprivate var loggingIsSetup = false
 
@@ -25,7 +26,7 @@ func setupLogging() {
 
 	let consoleDestination = ConsoleLogDestination(maxBytesDisplayed: -1)
 	consoleDestination.minimumLogLevel = .verbose
-	log.destinations.append(consoleDestination)
+	log.appendDestination(consoleDestination)
 }
 ```
 
